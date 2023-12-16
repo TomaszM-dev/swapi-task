@@ -3,6 +3,7 @@ import axios from 'axios';
 
 @Injectable()
 export class AppService {
+  // Retrieves all data from a specified SWAPI endpoint
   private async getAllData(endpoint: string) {
     try {
       const response = await axios.get(`https://swapi.dev/api/${endpoint}/`);
@@ -15,21 +16,22 @@ export class AppService {
     }
   }
 
+  // Applies filtering  based on the specified title or name.
   private applyFiltering(data: any[], title?: string) {
     console.log('Title', title);
     if (title) {
-      console.log(title);
       return data.filter(
         (item) =>
+          //  if title doesnt exist on item. Use name for filtration instead
           (item.title || item.name)
             ?.toLowerCase()
             .includes(title.toLowerCase()),
       );
     }
-    console.log('Data', data);
     return data;
   }
 
+  // Applies pagination to an array of data.
   private applyPagination(data: any[], page: number = 1, limit: number = 10) {
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
@@ -40,6 +42,7 @@ export class AppService {
     return paginatedData;
   }
 
+  //  Retrieves, filters, and paginates data from a SWAPI endpoint.
   private async getPaginatedAndFilteredData(
     endpoint: string,
     page: number = 1,
@@ -55,6 +58,20 @@ export class AppService {
       limit,
     );
     return paginatedAndFilteredData;
+  }
+
+  async getResourceById(endpoint: string, id: string) {
+    try {
+      const response = await axios.get(
+        `https://swapi.dev/api/${endpoint}/${id}`,
+      );
+      return response.data;
+    } catch (error) {
+      throw new HttpException(
+        `Failed to fetch ${endpoint} with ID ${id} from SWAPI`,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   async getFilms(page: number = 1, limit: number = 10, title?: string) {
