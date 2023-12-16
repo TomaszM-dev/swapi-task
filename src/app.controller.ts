@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -6,52 +6,87 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get('films')
-  async getFilms() {
+  async getFilms(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+    @Query('title') title: string,
+  ) {
     try {
-      const response = await this.appService.getFilms();
-      return response.data.results;
+      const films = await this.appService.getFilms(page, limit, title);
+      return films;
     } catch (error) {
-      throw error;
+      console.error('Error fetching films:', error.message);
+      return {
+        error: 'Failed to fetch films',
+      };
     }
   }
 
   @Get('species')
-  async getSpecies() {
+  async getSpecies(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+    @Query('title') title: string,
+  ) {
     try {
-      const response = await this.appService.getSpecies();
-      return response.data.results;
+      const species = await this.appService.getSpecies(page, limit, title);
+      return species;
     } catch (error) {
-      throw error;
+      console.error('Error fetching species:', error.message);
+      return {
+        error: 'Failed to fetch species',
+      };
     }
   }
 
   @Get('vehicles')
-  async getVehicles() {
+  async getVehicles(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+    @Query('title') title: string,
+  ) {
     try {
-      const response = await this.appService.getVehicles();
-      return response.data.results;
+      const vehicles = await this.appService.getVehicles(page, limit, title);
+      return vehicles;
     } catch (error) {
-      throw error;
+      console.error('Error fetching vehicles:', error.message);
+      return {
+        error: 'Failed to fetch vehicles',
+      };
     }
   }
 
   @Get('starships')
-  async getStarships() {
+  async getStarships(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+    @Query('title') title: string,
+  ) {
     try {
-      const response = await this.appService.getStarships();
-      return response.data.results;
+      const starships = await this.appService.getStarships(page, limit, title);
+      return starships;
     } catch (error) {
-      throw error;
+      console.error('Error fetching starships:', error.message);
+      return {
+        error: 'Failed to fetch starships',
+      };
     }
   }
 
   @Get('planets')
-  async getPlanets() {
+  async getPlanets(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+    @Query('title') title: string,
+  ) {
     try {
-      const response = await this.appService.getPlanets();
-      return response.data.results;
+      const planets = await this.appService.getPlanets(page, limit, title);
+      return planets;
     } catch (error) {
-      throw error;
+      console.error('Error fetching starships:', error.message);
+      return {
+        error: 'Failed to fetch starships',
+      };
     }
   }
 }
