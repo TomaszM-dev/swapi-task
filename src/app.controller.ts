@@ -37,6 +37,21 @@ export class AppController {
     }
   }
 
+  @Get('films/opening-crawls/unique-words')
+  async getUniqueWordOccurrences() {
+    try {
+      const openingCrawls = await this.appService.getAllFilmOpeningCrawls();
+      const uniqueWordOccurrences =
+        await this.appService.getUniqueWordOccurrences(openingCrawls);
+      return { uniqueWordOccurrences };
+    } catch (error) {
+      console.error('Error fetching unique word occurrences:', error.message);
+      return {
+        error: 'Failed to fetch unique word occurrences',
+      };
+    }
+  }
+
   @Get('species')
   async getSpecies(
     @Query('page') page: number,

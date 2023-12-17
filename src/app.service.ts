@@ -107,6 +107,50 @@ export class AppService {
     return paginatedAndFilteredData;
   }
 
+  // Fetches the opening crawls of all films from the SWAPI endpoint.
+  async getAllFilmOpeningCrawls() {
+    try {
+      const response = await axios.get('https://swapi.dev/api/films/');
+      console.log(response.data.results);
+      const openingCrawls = response.data.results.map(
+        (film) => film.opening_crawl,
+      );
+
+      return openingCrawls;
+    } catch (error) {
+      throw new HttpException(
+        'Failed to fetch opening crawls from SWAPI',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  // Calculates the occurrences of unique words in an array of opening crawls.
+  async getUniqueWordOccurrences(openingCrawls: string[]) {
+    const cacheKey = 'uniqueWordOccurrences';
+    const cachedData = await this.getCachedData<{ [word: string]: number }>(
+      cacheKey,
+      async () => {
+        const allText = openingCrawls.join(' ');
+        const words = allText.split(/\s+/);
+        const wordOccurrences: { [word: string]: number } = {};
+
+        words.forEach((word) => {
+          const sanitizedWord = word.trim();
+          if (sanitizedWord !== '') {
+            wordOccurrences[sanitizedWord] =
+              (wordOccurrences[sanitizedWord] || 0) + 1;
+          }
+        });
+
+        return wordOccurrences;
+      },
+    );
+
+    // Sorted wordOccurrences in escending order
+    return Object.entries(cachedData).sort((a, b) => b[1] - a[1]);
+  }
+
   // A generic function to fetch and cache data using the specified cache key and fetch function.
   private withCache<T>(
     cacheKey: string,

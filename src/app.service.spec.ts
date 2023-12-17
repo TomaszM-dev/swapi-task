@@ -5,6 +5,7 @@ import { AppModule } from './app.module';
 
 describe('AppService (e2e)', () => {
   let app: INestApplication;
+
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
@@ -98,6 +99,7 @@ describe('AppService (e2e)', () => {
       });
   });
 
+  // Tests the '/films' endpoint for caching behavior.
   const cache = {};
 
   it('/films (GET) - expect to get catching ', async () => {
