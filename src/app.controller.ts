@@ -9,10 +9,10 @@ export class AppController {
   async getFilms(
     @Query('page') page: number,
     @Query('limit') limit: number,
-    @Query('title') title: string,
+    @Query('param') param: string,
   ) {
     try {
-      const films = await this.appService.getFilms(page, limit, title);
+      const films = await this.appService.getFilms(page, limit, param);
       return films;
     } catch (error) {
       console.error('Error fetching films:', error.message);
@@ -41,10 +41,10 @@ export class AppController {
   async getSpecies(
     @Query('page') page: number,
     @Query('limit') limit: number,
-    @Query('title') title: string,
+    @Query('param') param: string,
   ) {
     try {
-      const species = await this.appService.getSpecies(page, limit, title);
+      const species = await this.appService.getSpecies(page, limit, param);
       return species;
     } catch (error) {
       console.error('Error fetching species:', error.message);
@@ -72,10 +72,10 @@ export class AppController {
   async getVehicles(
     @Query('page') page: number,
     @Query('limit') limit: number,
-    @Query('title') title: string,
+    @Query('param') param: string,
   ) {
     try {
-      const vehicles = await this.appService.getVehicles(page, limit, title);
+      const vehicles = await this.appService.getVehicles(page, limit, param);
       return vehicles;
     } catch (error) {
       console.error('Error fetching vehicles:', error.message);
@@ -103,10 +103,10 @@ export class AppController {
   async getStarships(
     @Query('page') page: number,
     @Query('limit') limit: number,
-    @Query('title') title: string,
+    @Query('param') param: string,
   ) {
     try {
-      const starships = await this.appService.getStarships(page, limit, title);
+      const starships = await this.appService.getStarships(page, limit, param);
       return starships;
     } catch (error) {
       console.error('Error fetching starships:', error.message);
@@ -134,10 +134,10 @@ export class AppController {
   async getPlanets(
     @Query('page') page: number,
     @Query('limit') limit: number,
-    @Query('title') title: string,
+    @Query('param') param: string,
   ) {
     try {
-      const planets = await this.appService.getPlanets(page, limit, title);
+      const planets = await this.appService.getPlanets(page, limit, param);
       return planets;
     } catch (error) {
       console.error('Error fetching starships:', error.message);

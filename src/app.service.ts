@@ -17,15 +17,15 @@ export class AppService {
   }
 
   // Applies filtering  based on the specified title or name.
-  private applyFiltering(data: any[], title?: string) {
-    console.log('Title', title);
-    if (title) {
+  private applyFiltering(data: any[], param?: string) {
+    console.log('Title', param);
+    if (param) {
       return data.filter(
         (item) =>
           //  if title doesnt exist on item. Use name for filtration instead
           (item.title || item.name)
             ?.toLowerCase()
-            .includes(title.toLowerCase()),
+            .includes(param.toLowerCase()),
       );
     }
     return data;
@@ -47,10 +47,10 @@ export class AppService {
     endpoint: string,
     page: number = 1,
     limit: number = 10,
-    title?: string,
+    param?: string,
   ) {
     const allData = await this.getAllData(endpoint);
-    const filteredData = this.applyFiltering(allData, title);
+    const filteredData = this.applyFiltering(allData, param);
 
     const paginatedAndFilteredData = this.applyPagination(
       filteredData,
@@ -74,23 +74,23 @@ export class AppService {
     }
   }
 
-  async getFilms(page: number = 1, limit: number = 10, title?: string) {
-    return this.getPaginatedAndFilteredData('films', page, limit, title);
+  async getFilms(page: number = 1, limit: number = 10, param?: string) {
+    return this.getPaginatedAndFilteredData('films', page, limit, param);
   }
 
-  async getSpecies(page: number = 1, limit: number = 10, title?: string) {
-    return this.getPaginatedAndFilteredData('species', page, limit, title);
+  async getSpecies(page: number = 1, limit: number = 10, param?: string) {
+    return this.getPaginatedAndFilteredData('species', page, limit, param);
   }
 
-  async getVehicles(page: number = 1, limit: number = 10, title?: string) {
-    return this.getPaginatedAndFilteredData('vehicles', page, limit, title);
+  async getVehicles(page: number = 1, limit: number = 10, param?: string) {
+    return this.getPaginatedAndFilteredData('vehicles', page, limit, param);
   }
 
-  async getStarships(page: number = 1, limit: number = 10, title?: string) {
-    return this.getPaginatedAndFilteredData('starships', page, limit, title);
+  async getStarships(page: number = 1, limit: number = 10, param?: string) {
+    return this.getPaginatedAndFilteredData('starships', page, limit, param);
   }
 
-  async getPlanets(page: number = 1, limit: number = 10, title?: string) {
-    return this.getPaginatedAndFilteredData('planets', page, limit, title);
+  async getPlanets(page: number = 1, limit: number = 10, param?: string) {
+    return this.getPaginatedAndFilteredData('planets', page, limit, param);
   }
 }
