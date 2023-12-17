@@ -1,14 +1,19 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { CachedResource } from '../cached-resource.entity';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      envFilePath: '.env',
-      isGlobal: true,
+    TypeOrmModule.forRoot({
+      type: 'sqlite',
+      database: './data/database.db',
+      entities: [CachedResource],
+      synchronize: true,
     }),
+    TypeOrmModule.forFeature([CachedResource]),
   ],
   controllers: [AppController],
   providers: [AppService],

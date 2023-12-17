@@ -3,7 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './app.module';
 
-describe('AppController (e2e)', () => {
+describe('AppService (e2e)', () => {
   let app: INestApplication;
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -96,6 +96,30 @@ describe('AppController (e2e)', () => {
           expect(item.name).toEqual(expectedParam);
         });
       });
+  });
+
+  const cache = {};
+
+  it('/films (GET) - expect to get catching ', async () => {
+    const cachedData = cache['films'];
+    if (cachedData) {
+      const response = await request(app.getHttpServer())
+        .get('/films')
+        .set('If-None-Match', cachedData.etag);
+
+      expect(response.status).toBe(304);
+      expect(response.body).toEqual({});
+    } else {
+      const response = await request(app.getHttpServer()).get('/films');
+
+      expect(response.status).toBe(200);
+      expect(response.body).toBeDefined();
+
+      cache['films'] = {
+        data: response.body,
+        etag: 'films:1:10',
+      };
+    }
   });
 
   afterAll(async () => {
