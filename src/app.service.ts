@@ -42,7 +42,7 @@ export class AppService {
     return fetchedData;
   }
 
-  // Checks if the cache, created at a specific time, is still valid based on the provided cache duration.
+  // Checks if the cache, created at a specific time, is still valid based on the cache duration.
   private isCacheValid(createdAt: Date, cacheDuration: number): boolean {
     const currentTime = new Date();
     const expirationTime = new Date(createdAt.getTime() + cacheDuration * 60);
@@ -64,9 +64,7 @@ export class AppService {
 
   // Applies filtering to an array of data based on the specified title.
   private applyFiltering(data: any[], title?: string) {
-    console.log('Title', title);
     if (title) {
-      console.log(title);
       return data.filter(
         (item) =>
           (item.title || item.name)
@@ -74,7 +72,6 @@ export class AppService {
             .includes(title.toLowerCase()),
       );
     }
-    console.log('Data', data);
     return data;
   }
 
@@ -82,10 +79,7 @@ export class AppService {
   private applyPagination(data: any[], page: number = 1, limit: number = 10) {
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
-
     const paginatedData = data.slice(startIndex, endIndex);
-    console.log('Paginated data length:', paginatedData.length);
-
     return paginatedData;
   }
 
@@ -111,7 +105,6 @@ export class AppService {
   async getAllFilmOpeningCrawls() {
     try {
       const response = await axios.get('https://swapi.dev/api/films/');
-      console.log(response.data.results);
       const openingCrawls = response.data.results.map(
         (film) => film.opening_crawl,
       );
@@ -142,12 +135,10 @@ export class AppService {
               (wordOccurrences[sanitizedWord] || 0) + 1;
           }
         });
-
         return wordOccurrences;
       },
     );
-
-    // Sorted wordOccurrences in escending order
+    // Sorted in escending order
     return Object.entries(cachedData).sort((a, b) => b[1] - a[1]);
   }
 
@@ -157,7 +148,6 @@ export class AppService {
     const cachedData = await this.getCachedData<string>(cacheKey, async () => {
       const allText = openingCrawls.join(' ');
       const characterNames: string[] = [];
-
       const people = await this.getAllData('people');
       people.forEach((person: any) => {
         const name = person.name;
@@ -175,16 +165,14 @@ export class AppService {
           nameOccurrences[formattedName] = occurrences;
         }
       });
-
       return Object.keys(nameOccurrences).reduce((a, b) =>
         nameOccurrences[a] > nameOccurrences[b] ? a : b,
       );
     });
-
     return cachedData;
   }
 
-  // A generic function to fetch and cache data using the specified cache key and fetch function.
+  // A generic function to fetch and cache data
   private withCache<T>(
     cacheKey: string,
     fetchDataFunction: () => Promise<T>,

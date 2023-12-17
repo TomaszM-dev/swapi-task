@@ -25,7 +25,7 @@ describe('AppService (e2e)', () => {
       });
   });
 
-  it('/films?&page=2&limit=2 Expect to get the second page of films with a limit of 2 ', () => {
+  it('/films?&page=2&limit=2 : Expect to get the second page of films with a limit of 2 ', () => {
     return request(app.getHttpServer())
       .get('/films?&page=2&limit=2')
       .expect(200)

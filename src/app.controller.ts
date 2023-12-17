@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  // Retrieves a list of films with optional pagination and search parameters.
   @Get('films')
   async getFilms(
     @Query('page') page: number,
@@ -22,7 +23,7 @@ export class AppController {
     }
   }
 
-  //  Retrieves a specific film by its ID from the SWAPI.
+  // Retrieves details of a film based on the provided film ID.
   @Get('films/:id')
   async getFilmById(@Param('id') id: string) {
     try {
@@ -37,6 +38,7 @@ export class AppController {
     }
   }
 
+  // Retrieves unique word occurrences in opening crawls of all films.
   @Get('films/opening-crawls/unique-words')
   async getUniqueWordOccurrences() {
     try {
@@ -52,6 +54,7 @@ export class AppController {
     }
   }
 
+  // Retrieves the most frequently mentioned character name in opening crawls of all films.
   @Get('films/opening-crawls/most-frequent-character-name')
   async getMostFrequentCharacterName() {
     try {
@@ -73,6 +76,7 @@ export class AppController {
     }
   }
 
+  // Retrieves a list of species with optional pagination and search parameters.
   @Get('species')
   async getSpecies(
     @Query('page') page: number,
@@ -90,7 +94,7 @@ export class AppController {
     }
   }
 
-  //  Retrieves a specific species by its ID from the SWAPI.
+  // Retrieves details of a species based on the provided species ID.
   @Get('species/:id')
   async getSpeciesById(@Param('id') id: string) {
     try {
@@ -104,6 +108,7 @@ export class AppController {
     }
   }
 
+  // Retrieves a list of vehicles with optional pagination and search parameters.
   @Get('vehicles')
   async getVehicles(
     @Query('page') page: number,
@@ -121,7 +126,7 @@ export class AppController {
     }
   }
 
-  //  Retrieves a specific vehicles by its ID from the SWAPI.
+  // Retrieves details of a vehicle based on the provided vehicle ID.
   @Get('vehicles/:id')
   async getVehiclesById(@Param('id') id: string) {
     try {
@@ -135,6 +140,7 @@ export class AppController {
     }
   }
 
+  // Retrieves a list of starships with optional pagination and search parameters.
   @Get('starships')
   async getStarships(
     @Query('page') page: number,
@@ -152,7 +158,7 @@ export class AppController {
     }
   }
 
-  //  Retrieves a specific starships by its ID from the SWAPI.
+  // Retrieves details of a starship based on the provided starship ID.
   @Get('starships/:id')
   async getStarshipsById(@Param('id') id: string) {
     try {
@@ -166,6 +172,7 @@ export class AppController {
     }
   }
 
+  // Retrieves a list of planets with optional pagination and search parameters.
   @Get('planets')
   async getPlanets(
     @Query('page') page: number,
@@ -183,7 +190,7 @@ export class AppController {
     }
   }
 
-  //  Retrieves a specific planets by its ID from the SWAPI.
+  // Retrieves details of a planet based on the provided planet ID.
   @Get('planets/:id')
   async getPlanetsById(@Param('id') id: string) {
     try {
