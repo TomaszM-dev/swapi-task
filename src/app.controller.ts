@@ -52,6 +52,27 @@ export class AppController {
     }
   }
 
+  @Get('films/opening-crawls/most-frequent-character-name')
+  async getMostFrequentCharacterName() {
+    try {
+      const openingCrawls = await this.appService.getAllFilmOpeningCrawls();
+      const mostFrequentCharacterName =
+        await this.appService.getMostFrequentCharacterName(openingCrawls);
+
+      return {
+        mostFrequentCharacterName,
+      };
+    } catch (error) {
+      console.error(
+        'Error fetching most frequent character name:',
+        error.message,
+      );
+      return {
+        error: 'Failed to fetch most frequent character name',
+      };
+    }
+  }
+
   @Get('species')
   async getSpecies(
     @Query('page') page: number,

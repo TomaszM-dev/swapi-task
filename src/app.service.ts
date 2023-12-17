@@ -151,6 +151,39 @@ export class AppService {
     return Object.entries(cachedData).sort((a, b) => b[1] - a[1]);
   }
 
+  // Calculates the most frequent character name by his occurrencess from openingCrawls
+  async getMostFrequentCharacterName(openingCrawls: string[]) {
+    const cacheKey = 'mostFrequentCharacterName';
+    const cachedData = await this.getCachedData<string>(cacheKey, async () => {
+      const allText = openingCrawls.join(' ');
+      const characterNames: string[] = [];
+
+      const people = await this.getAllData('people');
+      people.forEach((person: any) => {
+        const name = person.name;
+        // If the name contains spaces, treat it as a single-word name
+        characterNames.push(name.replace(/\s+/g, ' '));
+      });
+
+      const nameOccurrences: { [name: string]: number } = {};
+
+      characterNames.forEach((name) => {
+        const formattedName = name.trim();
+        if (formattedName !== '') {
+          const regex = new RegExp(`\\b${formattedName}\\b`, 'gi');
+          const occurrences = (allText.match(regex) || []).length;
+          nameOccurrences[formattedName] = occurrences;
+        }
+      });
+
+      return Object.keys(nameOccurrences).reduce((a, b) =>
+        nameOccurrences[a] > nameOccurrences[b] ? a : b,
+      );
+    });
+
+    return cachedData;
+  }
+
   // A generic function to fetch and cache data using the specified cache key and fetch function.
   private withCache<T>(
     cacheKey: string,
@@ -160,7 +193,7 @@ export class AppService {
     return this.getCachedData(cacheKey, fetchDataFunction, cacheDuration);
   }
 
-  // A generic function to fetch and cache data using the specified cache key and fetch function.
+  // Fetches data using the id key and provided endpoint.
   async getResourceById(endpoint: string, id: string) {
     const cacheKey = `resourceById:${endpoint}:${id}`;
     const cachedData = await this.getCachedData(cacheKey, async () => {
